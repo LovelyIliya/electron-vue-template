@@ -2,7 +2,17 @@
 
 An Electron application with Vue and TypeScript
 
-基于electron-vite二次封装的简单模板，在原基础上新增启动更新检测，手动更新检测，点击关闭时询问是否最小化到托盘，axios请求封装。
+基于electron-vite二次封装的简单模板，在原基础上新增：
+
+**启动更新检测**
+
+**手动更新检测**
+
+**调用操作系统进行通知及点击通知通信**
+
+**点击关闭时询问是否最小化到托盘**
+
+**axios请求封装**
 
 持续更新
 
