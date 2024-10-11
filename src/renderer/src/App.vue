@@ -4,6 +4,7 @@
   <p v-if="noUp">无新版本</p>
   <button @click="notification">通知</button>
   <p id="output"></p>
+  <button @click="setProgress">进度条</button>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -20,5 +21,18 @@ const notification = () => {
   const CLICK_MESSAGE = '点击通知!'
   new Notification(NOTIFICATION_TITLE, { body: NOTIFICATION_BODY }).onclick = () =>
     ((document.getElementById('output') as HTMLElement).innerText = CLICK_MESSAGE)
+}
+
+const setProgress = () => {
+  let progress = 0
+  let progressInterval = setInterval(() => {
+    window.electron.ipcRenderer.send('setProgressBar', progress)
+    if (progress < 1.5) {
+      progress += 0.03
+    } else {
+      clearInterval(progressInterval)
+      window.electron.ipcRenderer.send('setProgressBar', -1)
+    }
+  }, 100)
 }
 </script>

@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog, IpcMainEvent } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { autoUpdateInit, handleUpdate } from './update'
@@ -37,6 +37,7 @@ function createWindow(): void {
 
   mainWindow.on('close', (event) => {
     event.preventDefault()
+    setLocalData('minimizeToTray', false)
     if (getLocalData('minimizeToTray')) {
       return mainWindow.hide()
     }
@@ -114,6 +115,11 @@ app.whenReady().then(() => {
   initTray(mainWindow, app)
   // 自动更新检测初始化
   autoUpdateInit(mainWindow)
+
+  ipcMain.on('setProgressBar', (event: IpcMainEvent, ...args: any[]) => {
+    const val = args[0] as number
+    mainWindow.setProgressBar(val)
+  })
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
